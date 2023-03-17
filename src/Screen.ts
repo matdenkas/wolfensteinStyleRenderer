@@ -24,7 +24,6 @@ export class Screen {
 
     public drawLine(from: Vec2, to: Vec2, color: Color, isShaded: boolean) {
         
-        this.context.globalCompositeOperation = 'source-over';
         if(isShaded) { this.context.fillStyle = color.toShadedCSSColor(2); }
         else { this.context.fillStyle = color.toCSSColor(); }
         

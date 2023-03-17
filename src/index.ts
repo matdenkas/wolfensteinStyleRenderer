@@ -4,6 +4,7 @@ import { GameMap } from "./GameMap"
 import { Renderer } from "./Renderer"
 import { Vec2 } from "./Vec2";
 
+
 console.log("I am working");
 let intMap = [
     [1, 1, 1, 1, 1, 1],
@@ -24,10 +25,33 @@ const camera: Camera = new Camera(
     new Vec2( 1, 1), //pos
     new Vec2(-1, 0)  //rot
 )
+
+
 const renderer: Renderer = new Renderer(camera, gameMap);
 renderer.computeFrame();
+
+let i = 0;
 setInterval(() => {
-    camera.position.x = camera.position.x + 1;
+    i = (i + 1) % 4
+
+    switch(i) {
+        case 0: {
+            camera.rotation.x = 1; camera.rotation.y = 0;
+            break;
+        }
+        case 1: {
+            camera.rotation.x = 0; camera.rotation.y = 1;
+            break;
+        }
+        case 2: {
+            camera.rotation.x = -1; camera.rotation.y = 0;
+            break;
+        }
+        case 3: {
+            camera.rotation.x = 0; camera.rotation.y = -1;
+            break;
+        }        
+    }
     renderer.computeFrame();
 }, 2000);
 
