@@ -17,6 +17,8 @@ export class Renderer {
 
   public computeFrame() {
 
+    this.screen.clear();
+
     for(var i = 0; i < this.screen.width; i++){
       let [hitDist, hitId, isNSSide] = this.raycast(i);
       

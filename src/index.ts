@@ -26,3 +26,8 @@ const camera: Camera = new Camera(
 )
 const renderer: Renderer = new Renderer(camera, gameMap);
 renderer.computeFrame();
+setInterval(() => {
+    camera.position.x = camera.position.x + 1;
+    renderer.computeFrame();
+}, 2000);
+
