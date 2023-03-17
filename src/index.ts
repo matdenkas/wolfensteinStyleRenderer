@@ -21,8 +21,8 @@ let id = new Map<number, Color>([
 
 const gameMap: GameMap = new GameMap(intMap, id);
 const camera: Camera = new Camera(
-    new Vec2(.782, -1),
-    new Vec2(0, 0)
+    new Vec2( 1, 1), //pos
+    new Vec2(-1, 0)  //rot
 )
 const renderer: Renderer = new Renderer(camera, gameMap);
 renderer.computeFrame();

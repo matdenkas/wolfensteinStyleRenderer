@@ -45,8 +45,8 @@ export class Renderer {
     
     //The direction of our ray.
     const rayDir: Vec2 = new Vec2(
-      this.camera.position.x + this.camera.rotation.x + this.camera.plane.x,
-      this.camera.position.y + this.camera.rotation.y + this.camera.plane.y
+      this.camera.position.x + this.camera.rotation.x + cameraX,
+      this.camera.position.y + this.camera.rotation.y + cameraX
     );
 
     //The position on the map we are in
@@ -99,8 +99,10 @@ export class Renderer {
         isNSSide = true; //if we hit, its a NS side
       }
 
-      if(this.map.IntMap[mapPos.x][mapPos.y] > 0) {
-        hit = this.map.IntMap[mapPos.x][mapPos.y];
+
+      let x = this.map.IntMap[mapPos.x][mapPos.y]
+      if(x > 0) {
+        hit = x;
       }
     }
 
