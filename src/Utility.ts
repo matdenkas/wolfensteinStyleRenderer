@@ -1,7 +1,7 @@
 import { Vec2 } from "./Vec2"
 
 export function cartesianToRadian(cartesianCords: Vec2) {
-    return Math.tan(cartesianCords.y / cartesianCords.x);
+    return Math.atan2(cartesianCords.y, cartesianCords.x);
 }
 
 export function radianToDegree(radians: number) {

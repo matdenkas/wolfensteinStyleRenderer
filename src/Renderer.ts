@@ -22,12 +22,12 @@ export class Renderer {
     for(var i = 0; i < this.screen.width; i++){
       let [hitDist, hitId, isNSSide] = this.raycast(i);
       
-      let lineHeight = Math.round(this.screen.height / Number(hitDist));
+      let lineHeight = Math.floor(this.screen.height / Number(hitDist));
 
-      let start = Math.round(-lineHeight / 2 + this.screen.height / 2);
+      let start = Math.floor(-lineHeight / 2 + this.screen.height / 2);
       if(start < 0) { start = 0 }
 
-      let end = Math.round(lineHeight / 2 + this.screen.height / 2);
+      let end = Math.floor(lineHeight / 2 + this.screen.height / 2);
       if(end >= this.screen.height) { end = this.screen.height - 1 }
 
       let color = this.map.idMappings.get(Number(hitId));      
@@ -47,8 +47,8 @@ export class Renderer {
     
     //The direction of our ray.
     const rayDir: Vec2 = new Vec2(
-      this.camera.position.x + this.camera.rotation.x + cameraX,
-      this.camera.position.y + this.camera.rotation.y + cameraX
+      this.camera.rotation.x + this.camera.plane.x + cameraX,
+      this.camera.rotation.y + this.camera.plane.y + cameraX
     );
 
     //The position on the map we are in
@@ -60,7 +60,7 @@ export class Renderer {
     //Distance from one side (x || y) to next side
     const deltaDist: Vec2 = new Vec2(
       Math.abs(1 / rayDir.x),
-      Math.abs(1/rayDir.y)
+      Math.abs(1 / rayDir.y)
     );
 
     let hit: number = 0; //If/what we hit
@@ -75,19 +75,19 @@ export class Renderer {
     }
     else {
       step.x = 1;
-      sideDist.x = (mapPos.x + 1 - this.camera.position.x) * deltaDist.x; //get it from the right side
+      sideDist.x = (mapPos.x + 1.0 - this.camera.position.x) * deltaDist.x; //get it from the right side
     }
     if(rayDir.y < 0) { //Why do we need Y dir? If we are computing everything on X?
       step.y = -1;
-      sideDist.y = (this.camera.position.y - mapPos.y * deltaDist.y);
+      sideDist.y = (this.camera.position.y - mapPos.y) * deltaDist.y;
     }
     else {
       step.y = 1;
-      sideDist.y = (mapPos.x + 1 + - this.camera.position.y) * deltaDist.y;
+      sideDist.y = (mapPos.y + 1.0 + - this.camera.position.y) * deltaDist.y;
     }
 
     //Actually preform the DDA
-    while(hit === 0) {
+    while(hit == 0) {
       
       //Jump to next map square
       if(sideDist.x < sideDist.y) {
@@ -101,11 +101,7 @@ export class Renderer {
         isNSSide = true; //if we hit, its a NS side
       }
 
-
-      let x = this.map.IntMap[mapPos.x][mapPos.y]
-      if(x > 0) {
-        hit = x;
-      }
+      hit = this.map.IntMap[mapPos.x][mapPos.y];
     }
 
     //prevent fisheye effect
@@ -117,6 +113,7 @@ export class Renderer {
       wallDistance = (sideDist.y - deltaDist.y)
     }
 
-    return [wallDistance, hit, isNSSide]
+    //console.log(`i: ${x}, wd: ${wallDistance}, hit: ${hit}, isNSSide: ${isNSSide}`)
+    return [Math.abs(wallDistance), hit, isNSSide]
   }
 }
